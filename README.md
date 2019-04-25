@@ -1,6 +1,6 @@
 <h3> Team members: </h3>
-<li>
-  <ul> Tagayev Ilyas</ul>
-  <ul> Saidagali Adil</ul>
-  <ul> Kozlov Pavel</ul>
-</li>
+<ul>
+  <li> Tagayev Ilyas</li>
+  <li> Saidagali Adil</li>
+  <li> Kozlov Pavel</li>
+</ul>
