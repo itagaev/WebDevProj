@@ -1,5 +1,4 @@
-from api.models import TaskList, Task
-from api.serializers import TaskListSerializer, TaskSerializer, UserSerializer
+from api.serializers import UserSerializer
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -22,9 +21,31 @@ class UserList(generics.ListAPIView):
     # authentication_classes = (TokenAuthentication)
 
 @api_view(['POST'])
-def user_login(request):
+def login(request):
     serializer = AuthTokenSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = serializer.validated_data.get('user')
+    is_staff = user.is_staff
+    username = user.username
     token, created = Token.objects.get_or_create(user=user)
-    return Response({'token': token.key})
+    return Response({'token': token.key, 'is_staff': is_staff, 'username': username})
+
+
+@api_view(['POST'])
+def logout(request):
+    request.auth.delete()
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def signup(request):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        User.objects.create_user(
+            username=serializer.data['username'],
+            email=serializer.data['email'],
+            password=serializer.initial_data['password']
+        )
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)

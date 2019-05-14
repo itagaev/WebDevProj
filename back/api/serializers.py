@@ -1,22 +1,20 @@
 from rest_framework import serializers
-from api.models import Task, TaskList, Hospital, Doctor, Patient, Appointment, Medicine
+from api.models import Hospital, Doctor, Patient, Appointment, Medicine
 from django.contrib.auth.models import User
 
 import datetime
 
 class UserSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    is_staff = serializers.BooleanField(required=False, default=False)
+    password = serializers.CharField(write_only=True)
+    username = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'email')
+        fields = ('id', 'username', 'email', 'password', 'is_staff')
 
-class TaskListSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField()
-    created_by = UserSerializer()
-
-    class Meta:
-        model = TaskList
-        fields = ('id', 'name', 'created_by',)
 
 class HospitalSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -64,18 +62,18 @@ class MedicineSerializer(serializers.ModelSerializer):
         model = Medicine
         fields = '__all__'
 
-class AppointmentSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
+class AppointmentSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     type = serializers.CharField()
     description = serializers.CharField()
-    patient = PatienSerializer()
-    doctor = DoctorSerializer()
 
-class TaskSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(required=True)
-    #created_at = serializers.DatetimeField()
-    #due_on = serializers.DatetimeField()
-    status=serializers.CharField()
-    tasklist=TaskListSerializer()
+    class Meta:
+        model = Appointment
+        fields = '__all__'
+
+    def create(self, validated_data):
+        appointment = Appointment(**validated_data)
+        appointment.save()
+        return appointment
+
 

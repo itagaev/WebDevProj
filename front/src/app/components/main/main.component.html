@@ -1,0 +1,47 @@
+<ng-container *ngIf="!logged">
+<div class="modal-body">
+  <div>Login: </div>
+    <div style="float: left">
+      <div>
+        <label for="user">Username</label>
+        <input class="form-control" id="user" type="text" [(ngModel)]="username">
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input class="form-control" id="password" type="password" [(ngModel)]="password">
+      </div>
+    </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" (click)="auth()" data-dismiss="modal">Sign In</button>
+  </div>
+</div>
+</ng-container>
+
+
+ <br/>
+ <br/>
+ 
+  <div class="modal-body">
+      <div>Registration</div>
+      <div>
+        <div>
+          <label for="newuser">New Username</label>
+          <input class="form-control" id="newuser" type="text" [(ngModel)]="signupname">
+        </div>
+        <div>
+          <label for="email">E-mail</label>
+          <input  class="form-control"id="email" type="text" [(ngModel)]="email">
+        </div>
+        <div>
+          <label for="newpassword">Password</label>
+          <input class="form-control" id="newpassword" type="password" [(ngModel)]="signuppassword">
+        </div>
+
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" (click)="signup()" data-dismiss="modal">Sign Up</button>
+    </div>
