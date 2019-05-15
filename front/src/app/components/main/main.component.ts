@@ -13,9 +13,11 @@ export class MainComponent implements OnInit {
   public username = '';
   public password = '';
   public email = '';
+  public token = '';
+  public canSignUp: boolean = false;
   public loggedUserName: string = '';
   public logged: boolean = false;
-  public isStaff: boolean = false;
+ 
 
   constructor(private provider: ProviderService) { }
 
@@ -25,9 +27,9 @@ export class MainComponent implements OnInit {
   auth(){
     if(this.username != '' && this.password != ''){
       this.provider.auth(this.username, this.password).then(res =>{
-        console.log(res.username);
+        console.log(localStorage);
          localStorage.setItem('token', res.token);
-         this.isStaff = res.is_staff;
+         this.provider.isStaff = res.is_staff;
          this.logged = true;
          this.loggedUserName = res.username;
          this.username = '';
@@ -40,6 +42,7 @@ export class MainComponent implements OnInit {
     this.provider.logout().then(res => {
         localStorage.removeItem('token');
         this.logged = false;
+        this.loggedUserName = '';
     });
   }
 
@@ -48,7 +51,7 @@ export class MainComponent implements OnInit {
       this.provider.signup(this.signupname, this.signuppassword,this.email ).then(res => 
         this.provider.auth(this.signupname, this.signuppassword).then(r => {
            localStorage.setItem('token',r.token);
-           this.isStaff = r.is_staff;
+           this.provider.isStaff = r.is_staff;
            this.logged = true;
            this.loggedUserName = r.username;
            this.signupname = '';
@@ -57,5 +60,12 @@ export class MainComponent implements OnInit {
       }));
     }
   }
+
+  public makeSignUp(){
+    if (!this.canSignUp)
+      this.canSignUp = true;
+    else
+      this.canSignUp = false;
+   }
 
 }

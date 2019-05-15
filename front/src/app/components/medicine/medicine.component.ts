@@ -13,9 +13,13 @@ export class MedicineComponent implements OnInit {
   constructor(private provider: ProviderService) { }
 
   ngOnInit() {
+   
+  }
+
+  getMedicines(){
     this.provider.getMedicines().then(res => {
-         this.medicines = res;
-    });
+      this.medicines = res;
+ });
   }
 
 }

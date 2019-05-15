@@ -8,13 +8,20 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ProviderService extends MainService{
+  public isStaff: boolean = null;
 
   constructor(http: HttpClient) {
     super(http);
+    this.isStaff = false;
    }
+   public result: string = '';
+
+  
    
    getDoctors(): Promise<IDoctor[]>{
-     return this.get(`http://localhost:8000/api/doctors/`, {});
+     if(this.isStaff) this.result = 'doctors';
+     else this.result = 'vdoctors';
+     return this.get(`http://localhost:8000/api/${this.result}/`, {});
    }
 
    getDoctor(id: number): Promise<IDoctor>{
@@ -43,7 +50,9 @@ export class ProviderService extends MainService{
    }
 
    getPatients(): Promise<IPatient[]>{
-    return this.get(`http://localhost:8000/api/patients/`, {});
+    if(this.isStaff) this.result = 'patients';
+    else this.result = 'vpatients';
+    return this.get(`http://localhost:8000/api/${this.result}/`, {});
   }
 
   getPatient(id: number): Promise<IPatient>{
@@ -72,7 +81,9 @@ export class ProviderService extends MainService{
   }
    
   getHospitals(): Promise<IHospital[]>{
-    return this.get(`http://localhost:8000/api/hospitals/`, {});
+    if(this.isStaff) this.result = 'hospitals';
+     else this.result = 'vhospitals';
+    return this.get(`http://localhost:8000/api/${this.result}/`, {});
   }
 
   getHospital(id: number): Promise<IHospital>{
@@ -105,7 +116,9 @@ export class ProviderService extends MainService{
   }
    
   getAppointments(): Promise<IAppointment[]>{
-    return this.get(`http://localhost:8000/api/appointments/`, {});
+    if(this.isStaff) this.result = 'appointments';
+     else this.result = 'vappointments';
+    return this.get(`http://localhost:8000/api/${this.result}/`, {});
   }
 
   getAppointment(id: number): Promise<IAppointment>{
@@ -138,7 +151,7 @@ export class ProviderService extends MainService{
   }
 
   getMedicines(): Promise<IMedicine[]>{
-    return this.get(`http://localhost:8000/api/medicines/`, {});
+    return this.get(`http://localhost:8000/api/vmedicines/`, {});
   }
 
   getMedicine(id: number): Promise<IMedicine>{
@@ -173,6 +186,7 @@ export class ProviderService extends MainService{
   auth(login: string, password: string): Promise<IAuthResponse> {
     return this.post('http://localhost:8000/api/login/', {
       username: login,
+  
       password  
     });
   }

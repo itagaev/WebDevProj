@@ -14,12 +14,13 @@ export class DoctorComponent implements OnInit {
 
   ngOnInit() {
 
-    this.provider.getDoctors().then(res => {
-        this.doctors = res;
-    });
-
+     
   }
-
+  getDoctors(){
+    this.provider.getDoctors().then(res => {
+      this.doctors = res;
+  });
+  }
 
 
 }
